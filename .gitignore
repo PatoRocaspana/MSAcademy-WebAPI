@@ -3,6 +3,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+#Entities Storage files
+RentACarWebAPI/Cars.json
+RentACarWebAPI/Clients.json
+RentACarWebAPI/Rentals.json
+
 # User-specific files
 *.rsuser
 *.suo
