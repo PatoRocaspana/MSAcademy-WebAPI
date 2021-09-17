@@ -6,9 +6,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using RentACarWebAPI.Helpers;
 using RentACarWebAPI.Interfaces;
+using RentACarWebAPI.Interfaces.Services;
 using RentACarWebAPI.Models;
 using RentACarWebAPI.Options;
 using RentACarWebAPI.Repositories;
+using RentACarWebAPI.Services;
 
 namespace RentACarWebAPI
 {
@@ -41,6 +43,10 @@ namespace RentACarWebAPI
             services.AddTransient<IRepositoryHelper<Car>, RepositoryHelper<Car>>();
             services.AddTransient<IRepositoryHelper<Client>, RepositoryHelper<Client>>();
             services.AddTransient<IRepositoryHelper<Rental>, RepositoryHelper<Rental>>();
+
+            services.AddTransient<ICarService, CarService>();
+            services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IRentalService, RentalService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RentACarWebAPI.DTOs;
-using RentACarWebAPI.Interfaces;
+using RentACarWebAPI.Interfaces.Services;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,18 +12,18 @@ namespace RentACarWebAPI.Controllers
     [ApiController]
     public class CarController : ControllerBase
     {
-        private readonly ICarRepository _carRepository;
+        private readonly ICarService _carService;
 
-        public CarController(ICarRepository carRepository)
+        public CarController(ICarService carService)
         {
-            _carRepository = carRepository;
+            _carService = carService;
         }
 
         // GET: api/<CarController>
         [HttpGet]
         public IEnumerable<CarDto> Get()
         {
-            var carEntityList = _carRepository.GetAll();
+            var carEntityList = _carService.GetAll();
 
             var carDtoList = carEntityList.Select(carEntity => new CarDto(carEntity)).ToList();
 
@@ -34,7 +34,7 @@ namespace RentACarWebAPI.Controllers
         [HttpGet("{id}")]
         public CarDto Get(int id)
         {
-            var carEntity = _carRepository.Get(id);
+            var carEntity = _carService.Get(id);
 
             var carDto = new CarDto(carEntity);
 
@@ -47,7 +47,7 @@ namespace RentACarWebAPI.Controllers
         {
             var carEntity = carDto.ToCarEntity(carDto);
 
-            var carCreated = _carRepository.Create(carEntity);
+            var carCreated = _carService.Create(carEntity);
 
             var carResponse = new CarDto(carCreated);
 
@@ -60,7 +60,7 @@ namespace RentACarWebAPI.Controllers
         {
             var carEntity = carDto.ToCarEntity(carDto);
 
-            var carCreated = _carRepository.Update(carEntity, id);
+            var carCreated = _carService.Update(carEntity, id);
 
             var carResponse = new CarDto(carCreated);
 
@@ -71,7 +71,7 @@ namespace RentACarWebAPI.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _carRepository.Delete(id);
+            _carService.Delete(id);
         }
     }
 }

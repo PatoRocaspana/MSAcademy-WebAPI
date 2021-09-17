@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RentACarWebAPI.DTOs;
-using RentACarWebAPI.Interfaces;
+using RentACarWebAPI.Interfaces.Services;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,18 +12,18 @@ namespace RentACarWebAPI.Controllers
     [ApiController]
     public class ClientController : ControllerBase
     {
-        private readonly IClientRepository _clientRepository;
+        private readonly IClientService _clientService;
 
-        public ClientController(IClientRepository clientRepository)
+        public ClientController(IClientService clientService)
         {
-            _clientRepository = clientRepository;
+            _clientService = clientService;
         }
 
         // GET: api/<ClientController>
         [HttpGet]
         public IEnumerable<ClientDto> Get()
         {
-            var clientEntityList = _clientRepository.GetAll();
+            var clientEntityList = _clientService.GetAll();
 
             var clientDtoList = clientEntityList.Select(clientEntity => new ClientDto(clientEntity)).ToList();
 
@@ -34,7 +34,7 @@ namespace RentACarWebAPI.Controllers
         [HttpGet("{id}")]
         public ClientDto Get(int id)
         {
-            var clientEntity = _clientRepository.Get(id);
+            var clientEntity = _clientService.Get(id);
 
             var clientDto = new ClientDto(clientEntity);
 
@@ -47,7 +47,7 @@ namespace RentACarWebAPI.Controllers
         {
             var clientEntity = clientDto.ToClientEntity(clientDto);
 
-            var clientCreated = _clientRepository.Create(clientEntity);
+            var clientCreated = _clientService.Create(clientEntity);
 
             var carResponse = new ClientDto(clientCreated);
 
@@ -60,7 +60,7 @@ namespace RentACarWebAPI.Controllers
         {
             var clientEntity = clientDto.ToClientEntity(clientDto);
 
-            var clientCreated = _clientRepository.Update(clientEntity, id);
+            var clientCreated = _clientService.Update(clientEntity, id);
 
             var clientResponse = new ClientDto(clientCreated);
 
@@ -71,7 +71,7 @@ namespace RentACarWebAPI.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _clientRepository.Delete(id);
+            _clientService.Delete(id);
         }
     }
 }
