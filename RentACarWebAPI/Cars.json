@@ -1,0 +1,50 @@
+[
+  {
+    "Brand": 0,
+    "Model": "Vento",
+    "DoorsQuantity": 4,
+    "Color": "White",
+    "Transmission": 1,
+    "Id": 1
+  },
+  {
+    "Brand": 0,
+    "Model": "Passat",
+    "DoorsQuantity": 4,
+    "Color": "Red",
+    "Transmission": 1,
+    "Id": 2
+  },
+  {
+    "Brand": 0,
+    "Model": "string",
+    "DoorsQuantity": 0,
+    "Color": "string",
+    "Transmission": 0,
+    "Id": 3
+  },
+  {
+    "Brand": 0,
+    "Model": "string",
+    "DoorsQuantity": 0,
+    "Color": "string",
+    "Transmission": 0,
+    "Id": 4
+  },
+  {
+    "Brand": 0,
+    "Model": "string",
+    "DoorsQuantity": 0,
+    "Color": "string",
+    "Transmission": 0,
+    "Id": 5
+  },
+  {
+    "Brand": 0,
+    "Model": "string",
+    "DoorsQuantity": 0,
+    "Color": "string",
+    "Transmission": 0,
+    "Id": 6
+  }
+]
