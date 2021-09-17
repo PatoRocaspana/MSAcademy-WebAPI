@@ -5,7 +5,7 @@ using RentACarWebAPI.Options;
 
 namespace RentACarWebAPI.Repositories
 {
-    public class CarRepository : Repository<Car>, ICarRepository
+    public class CarRepository : BaseRepository<Car>, ICarRepository
     {
         public CarRepository(IOptions<StorageOptions> storageConfig, IRepositoryHelper<Car> repositoryHelper) : base(storageConfig.Value.Car, repositoryHelper) { }
 

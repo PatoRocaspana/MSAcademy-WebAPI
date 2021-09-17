@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RentACarWebAPI.Interfaces
 {
-    public interface IRepository<T> where T : Entity
+    public interface IBaseRepository<T> where T : Entity
     {
         T Create(T obj);
         T Get(int id);

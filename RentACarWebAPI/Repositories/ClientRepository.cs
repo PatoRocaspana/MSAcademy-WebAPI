@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace RentACarWebAPI.Repositories
 {
-    public class ClientRepository : Repository<Client>, IClientRepository
+    public class ClientRepository : BaseRepository<Client>, IClientRepository
     {
         public ClientRepository(IOptions<StorageOptions> storageConfig, IRepositoryHelper<Client> repositoryHelper) : base(storageConfig.Value.Client, repositoryHelper) { }
 

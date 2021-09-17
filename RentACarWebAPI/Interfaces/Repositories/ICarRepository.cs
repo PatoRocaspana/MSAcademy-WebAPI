@@ -2,7 +2,7 @@
 
 namespace RentACarWebAPI.Interfaces
 {
-    public interface IClientRepository : IRepository<Client>
+    public interface ICarRepository : IBaseRepository<Car>
     {
     }
 }

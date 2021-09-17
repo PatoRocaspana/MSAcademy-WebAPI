@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace RentACarWebAPI.Repositories
 {
-    public abstract class Repository<T> : IRepository<T> where T : Entity
+    public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
     {
         protected readonly IRepositoryHelper<T> RepositoryHelper;
         protected List<T> EntityList { get; private set; }
 
         protected readonly string _jsonFile;
 
-        public Repository(string storagePath, IRepositoryHelper<T> repositoryHelper)
+        public BaseRepository(string storagePath, IRepositoryHelper<T> repositoryHelper)
         {
             _jsonFile = storagePath;
             RepositoryHelper = repositoryHelper;
