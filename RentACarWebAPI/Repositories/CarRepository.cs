@@ -7,7 +7,7 @@ namespace RentACarWebAPI.Repositories
 {
     public class CarRepository : Repository<Car>, ICarRepository
     {
-        public CarRepository(IOptions<StorageOptions> storageConfig) : base(storageConfig.Value.Car) { }
+        public CarRepository(IOptions<StorageOptions> storageConfig, IRepositoryHelper<Car> repositoryHelper) : base(storageConfig.Value.Car, repositoryHelper) { }
 
         protected override void UpdateEntity(Car existingEntity, Car newEntity)
         {

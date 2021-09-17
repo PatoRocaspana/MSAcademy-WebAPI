@@ -4,7 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using RentACarWebAPI.Helpers;
 using RentACarWebAPI.Interfaces;
+using RentACarWebAPI.Models;
 using RentACarWebAPI.Options;
 using RentACarWebAPI.Repositories;
 
@@ -35,6 +37,10 @@ namespace RentACarWebAPI
             services.AddTransient<ICarRepository, CarRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IRentalRepository, RentalRepository>();
+
+            services.AddTransient<IRepositoryHelper<Car>, RepositoryHelper<Car>>();
+            services.AddTransient<IRepositoryHelper<Client>, RepositoryHelper<Client>>();
+            services.AddTransient<IRepositoryHelper<Rental>, RepositoryHelper<Rental>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

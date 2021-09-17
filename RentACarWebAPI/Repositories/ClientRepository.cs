@@ -11,7 +11,7 @@ namespace RentACarWebAPI.Repositories
 {
     public class ClientRepository : Repository<Client>, IClientRepository
     {
-        public ClientRepository(IOptions<StorageOptions> storageConfig) : base(storageConfig.Value.Client) { }
+        public ClientRepository(IOptions<StorageOptions> storageConfig, IRepositoryHelper<Client> repositoryHelper) : base(storageConfig.Value.Client, repositoryHelper) { }
 
         public override Client Create(Client newEntity)
         {
@@ -40,7 +40,7 @@ namespace RentACarWebAPI.Repositories
 
             UpdateEntity(existingEntity, newEntity);
 
-            RepositoryHelper<Client>.SaveListToFile(EntityList, _jsonFile);
+            RepositoryHelper.SaveListToFile(EntityList, _jsonFile);
 
             return existingEntity;
         }

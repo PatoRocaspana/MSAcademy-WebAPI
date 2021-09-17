@@ -1,4 +1,5 @@
-﻿using RentACarWebAPI.Models.Base;
+﻿using RentACarWebAPI.Interfaces;
+using RentACarWebAPI.Models.Base;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,19 +7,19 @@ using System.Text.Json;
 
 namespace RentACarWebAPI.Helpers
 {
-    static public class RepositoryHelper<T> where T : Entity
+    public class RepositoryHelper<T> : IRepositoryHelper<T> where T : Entity
     {
         /// <summary>
         /// Takes a file and deserialize it to a List<T>.
         /// In the case that file does not exist, it returns a new empty List<T>.
         /// </summary>
-        public static List<T> CheckFileAndGetList(string filePath)
+        public List<T> CheckFileAndGetList(string filePath)
         {
             var objs = (!File.Exists(filePath)) ? new List<T>() : GetListFromFile(filePath);
             return objs;
         }
 
-        public static int GetNewId(List<T> objs)
+        public int GetNewId(List<T> objs)
         {
             if (objs.Count > 0)
                 return objs.Max(e => e.Id) + 1;
@@ -26,7 +27,7 @@ namespace RentACarWebAPI.Helpers
                 return 1;
         }
 
-        public static List<T> GetListFromFile(string filePath)
+        public List<T> GetListFromFile(string filePath)
         {
             using (var streamReader = File.OpenText(filePath))
             {
@@ -36,7 +37,7 @@ namespace RentACarWebAPI.Helpers
             }
         }
 
-        public static void SaveListToFile(List<T> objs, string filePath)
+        public void SaveListToFile(List<T> objs, string filePath)
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
 

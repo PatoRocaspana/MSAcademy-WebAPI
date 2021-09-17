@@ -7,7 +7,7 @@ namespace RentACarWebAPI.Repositories
 {
     public class RentalRepository : Repository<Rental>, IRentalRepository
     {
-        public RentalRepository(IOptions<StorageOptions> storageConfig) : base(storageConfig.Value.Rental) { }
+        public RentalRepository(IOptions<StorageOptions> storageConfig, IRepositoryHelper<Rental> repositoryHelper) : base(storageConfig.Value.Rental, repositoryHelper) { }
 
         protected override void UpdateEntity(Rental existingEntity, Rental newEntity)
         {
