@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using RentACarWebAPI.Helpers;
-using RentACarWebAPI.Interfaces;
+using RentACarWebAPI.Interfaces.Repositories;
 using RentACarWebAPI.Interfaces.Services;
 using RentACarWebAPI.Models;
 using RentACarWebAPI.Options;

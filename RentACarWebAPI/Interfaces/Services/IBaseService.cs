@@ -1,9 +1,9 @@
 ﻿using RentACarWebAPI.Models.Base;
 using System.Collections.Generic;
 
-namespace RentACarWebAPI.Interfaces.Repositories
+namespace RentACarWebAPI.Interfaces.Services
 {
-    public interface IBaseRepository<T> where T : Entity
+    public interface IBaseService<T> where T : Entity
     {
         T Create(T obj);
         T Get(int id);

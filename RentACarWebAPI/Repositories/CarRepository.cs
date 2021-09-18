@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using RentACarWebAPI.Interfaces;
+using RentACarWebAPI.Interfaces.Repositories;
 using RentACarWebAPI.Models;
 using RentACarWebAPI.Options;
 

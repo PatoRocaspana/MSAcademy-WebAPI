@@ -1,14 +1,9 @@
-﻿using RentACarWebAPI.Models;
-using System.Collections.Generic;
+﻿using RentACarWebAPI.Interfaces.Repositories;
+using RentACarWebAPI.Models;
 
 namespace RentACarWebAPI.Interfaces.Services
 {
-    public interface IRentalService
+    public interface IRentalService : IBaseRepository<Rental>
     {
-        Rental Create(Rental obj);
-        Rental Get(int id);
-        Rental Update(Rental entity, int id);
-        void Delete(int id);
-        List<Rental> GetAll();
     }
 }
