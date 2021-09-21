@@ -1,4 +1,4 @@
-﻿using RentACarWebAPI.Interfaces;
+﻿using RentACarWebAPI.Interfaces.Repositories;
 using RentACarWebAPI.Models.Base;
 using System.Collections.Generic;
 using System.Linq;

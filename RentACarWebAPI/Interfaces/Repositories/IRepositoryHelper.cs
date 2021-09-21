@@ -1,7 +1,7 @@
 ﻿using RentACarWebAPI.Models.Base;
 using System.Collections.Generic;
 
-namespace RentACarWebAPI.Interfaces
+namespace RentACarWebAPI.Interfaces.Repositories
 {
     public interface IRepositoryHelper <T> where T : Entity
     {

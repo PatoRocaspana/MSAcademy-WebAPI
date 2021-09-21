@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RentACarWebAPI.DTOs;
-using RentACarWebAPI.Interfaces;
-using System;
+using RentACarWebAPI.Interfaces.Services;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,18 +12,18 @@ namespace RentACarWebAPI.Controllers
     [ApiController]
     public class RentalController : ControllerBase
     {
-        private readonly IRentalRepository _rentalRepository;
+        private readonly IRentalService _rentalService;
 
-        public RentalController(IRentalRepository rentalRepository)
+        public RentalController(IRentalService rentalService)
         {
-            _rentalRepository = rentalRepository;
+            _rentalService = rentalService;
         }
 
         // GET: api/<RentalController>
         [HttpGet]
         public IEnumerable<RentalDto> Get()
         {
-            var rentalEntityList = _rentalRepository.GetAll();
+            var rentalEntityList = _rentalService.GetAll();
 
             var rentalDtoList = rentalEntityList.Select(rentalEntity => new RentalDto(rentalEntity)).ToList();
 
@@ -36,7 +34,7 @@ namespace RentACarWebAPI.Controllers
         [HttpGet("{id}")]
         public RentalDto Get(int id)
         {
-            var rentalEntity = _rentalRepository.Get(id);
+            var rentalEntity = _rentalService.Get(id);
 
             var rentalDto = new RentalDto(rentalEntity);
 
@@ -49,7 +47,7 @@ namespace RentACarWebAPI.Controllers
         {
             var rentalEntity = rentalDto.ToRentalEntity(rentalDto);
 
-            var rentalCreated = _rentalRepository.Create(rentalEntity);
+            var rentalCreated = _rentalService.Create(rentalEntity);
 
             var rentalResponse = new RentalDto(rentalCreated);
 
@@ -62,7 +60,7 @@ namespace RentACarWebAPI.Controllers
         {
             var rentalEntity = rentalDto.ToRentalEntity(rentalDto);
 
-            var rentalUpdated = _rentalRepository.Update(rentalEntity, id);
+            var rentalUpdated = _rentalService.Update(rentalEntity, id);
 
             var rentalResponse = new RentalDto(rentalUpdated);
 
@@ -73,7 +71,7 @@ namespace RentACarWebAPI.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _rentalRepository.Delete(id);
+            _rentalService.Delete(id);
         }
     }
 }
