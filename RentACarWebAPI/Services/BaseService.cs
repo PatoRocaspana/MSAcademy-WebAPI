@@ -1,20 +1,19 @@
 ﻿using RentACarWebAPI.Interfaces.Repositories;
 using RentACarWebAPI.Interfaces.Services;
 using RentACarWebAPI.Models.Base;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RentACarWebAPI.Services
 {
-    public class BaseService<T> : IBaseRepository<T> where T : Entity
+    public class BaseService<T> : IBaseService<T> where T : Entity
     {
         private readonly IBaseRepository<T> _entityRepository;
-        public BaseService(IBaseRepository<T> entityRepository )
+
+        public BaseService(IBaseRepository<T> entityRepository)
         {
             _entityRepository = entityRepository;
         }
+
         public T Create(T entity)
         {
             var entityCreated = _entityRepository.Create(entity);
