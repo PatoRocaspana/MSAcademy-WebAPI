@@ -14,34 +14,11 @@ namespace RentACarWebAPI.Repositories
 
         public override Client Create(Client newEntity)
         {
-            if (DniExistInList(newEntity.Dni))
-                return null;
-
             newEntity.LastUpdate = DateTime.UtcNow;
 
             var clientCreated = base.Create(newEntity);
 
             return clientCreated;
-        }
-
-        public override Client Update(Client newEntity, int id)
-        {
-            var existingEntity = Get(id);
-
-            if (existingEntity is null)
-                return null;
-
-            if (existingEntity.Dni != newEntity.Dni)
-            {
-                if (DniExistInList(newEntity.Dni))
-                    return null;
-            }
-
-            UpdateEntity(existingEntity, newEntity);
-
-            RepositoryHelper.SaveListToFile(EntityList, _jsonFile);
-
-            return existingEntity;
         }
 
         public override List<Client> GetAll()
@@ -63,11 +40,6 @@ namespace RentACarWebAPI.Repositories
             existingEntity.PostalCode = newEntity.PostalCode;
             existingEntity.Province = newEntity.Province;
             existingEntity.LastUpdate = DateTime.UtcNow;
-        }
-
-        private bool DniExistInList(string dni)
-        {
-            return EntityList.Any(e => e.Dni == dni);
         }
     }
 }
