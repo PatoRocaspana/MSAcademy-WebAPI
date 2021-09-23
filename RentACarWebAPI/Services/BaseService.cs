@@ -14,30 +14,30 @@ namespace RentACarWebAPI.Services
             _entityRepository = entityRepository;
         }
 
-        public T Create(T entity)
+        public virtual T Create(T entity)
         {
             var entityCreated = _entityRepository.Create(entity);
             return entityCreated;
         }
 
-        public void Delete(int id)
+        public virtual void Delete(int id)
         {
             _entityRepository.Delete(id);
         }
 
-        public T Get(int id)
+        public virtual T Get(int id)
         {
             var entity = _entityRepository.Get(id);
             return entity;
         }
 
-        public List<T> GetAll()
+        public virtual List<T> GetAll()
         {
             var entityList = _entityRepository.GetAll();
             return entityList;
         }
 
-        public T Update(T entity, int id)
+        public virtual T Update(T entity, int id)
         {
             var updatedEntity = _entityRepository.Update(entity, id);
             return updatedEntity;
