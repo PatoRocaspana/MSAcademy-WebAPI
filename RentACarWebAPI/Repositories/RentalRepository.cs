@@ -1,13 +1,11 @@
-﻿using Microsoft.Extensions.Options;
-using RentACarWebAPI.Interfaces.Repositories;
+﻿using RentACarWebAPI.Interfaces.Repositories;
 using RentACarWebAPI.Models;
-using RentACarWebAPI.Options;
 
 namespace RentACarWebAPI.Repositories
 {
     public class RentalRepository : BaseRepository<Rental>, IRentalRepository
     {
-        public RentalRepository(IOptions<StorageOptions> storageConfig, IRepositoryHelper<Rental> repositoryHelper) : base(storageConfig.Value.Rental, repositoryHelper) { }
+        public RentalRepository(RentACarDbContext dbContext) : base(dbContext) { }
 
         protected override void UpdateEntity(Rental existingEntity, Rental newEntity)
         {

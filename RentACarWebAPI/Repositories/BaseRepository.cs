@@ -7,26 +7,21 @@ namespace RentACarWebAPI.Repositories
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
     {
-        protected readonly IRepositoryHelper<T> RepositoryHelper;
-        protected List<T> EntityList { get; private set; }
+        private readonly RentACarDbContext _dbContext;
 
-        protected readonly string _jsonFile;
-
-        public BaseRepository(string storagePath, IRepositoryHelper<T> repositoryHelper)
+        public BaseRepository(RentACarDbContext dbContext)
         {
-            _jsonFile = storagePath;
-            RepositoryHelper = repositoryHelper;
-            EntityList = RepositoryHelper.CheckFileAndGetList(_jsonFile);
+            _dbContext = dbContext;
         }
 
         public virtual T Create(T entity)
         {
-            entity.Id = RepositoryHelper.GetNewId(EntityList);
-            EntityList.Add(entity);
+            _dbContext.Set<T>().Add(entity);
+            _dbContext.SaveChanges();
 
-            RepositoryHelper.SaveListToFile(EntityList, _jsonFile);
+            var entityCreated = Get(entity.Id);
 
-            return entity;
+            return entityCreated;
         }
 
         public virtual T Update(T entity, int id)
@@ -38,7 +33,7 @@ namespace RentACarWebAPI.Repositories
 
             UpdateEntity(existingEntity, entity);
 
-            RepositoryHelper.SaveListToFile(EntityList, _jsonFile);
+            _dbContext.SaveChanges();
 
             return existingEntity;
         }
@@ -47,19 +42,20 @@ namespace RentACarWebAPI.Repositories
 
         public virtual T Get(int id)
         {
-            var entity = EntityList.FirstOrDefault(e => e.Id == id);
+            var entity = _dbContext.Set<T>().Find(id);
             return entity;
         }
 
         public virtual void Delete(int id)
         {
-            EntityList.Remove(EntityList.FirstOrDefault(obj => obj.Id == id));
-            RepositoryHelper.SaveListToFile(EntityList, _jsonFile);
+            _dbContext.Set<T>().Remove(Get(id));
+            _dbContext.SaveChanges();
         }
 
         public virtual List<T> GetAll()
         {
-            return EntityList;
+            var entityList = _dbContext.Set<T>().ToList();
+            return entityList;
         }
     }
 }

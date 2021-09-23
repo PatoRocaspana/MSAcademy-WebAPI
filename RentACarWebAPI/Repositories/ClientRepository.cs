@@ -1,7 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using RentACarWebAPI.Interfaces.Repositories;
+﻿using RentACarWebAPI.Interfaces.Repositories;
 using RentACarWebAPI.Models;
-using RentACarWebAPI.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +8,7 @@ namespace RentACarWebAPI.Repositories
 {
     public class ClientRepository : BaseRepository<Client>, IClientRepository
     {
-        public ClientRepository(IOptions<StorageOptions> storageConfig, IRepositoryHelper<Client> repositoryHelper) : base(storageConfig.Value.Client, repositoryHelper) { }
+        public ClientRepository(RentACarDbContext dbContext) : base(dbContext) { }
 
         public override Client Create(Client newEntity)
         {
@@ -23,10 +21,11 @@ namespace RentACarWebAPI.Repositories
 
         public override List<Client> GetAll()
         {
-            var list = EntityList
+            var clientList = base.GetAll()
                            .OrderBy(e => e.Id)
                            .ToList();
-            return list;
+
+            return clientList;
         }
 
         protected override void UpdateEntity(Client existingEntity, Client newEntity)
