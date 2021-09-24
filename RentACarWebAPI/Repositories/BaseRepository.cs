@@ -7,21 +7,19 @@ namespace RentACarWebAPI.Repositories
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
     {
-        private readonly RentACarDbContext _dbContext;
+        protected readonly RentACarDbContext DbContext;
 
         public BaseRepository(RentACarDbContext dbContext)
         {
-            _dbContext = dbContext;
+            DbContext = dbContext;
         }
 
         public virtual T Create(T entity)
         {
-            _dbContext.Set<T>().Add(entity);
-            _dbContext.SaveChanges();
+            DbContext.Set<T>().Add(entity);
+            DbContext.SaveChanges();
 
-            var entityCreated = Get(entity.Id);
-
-            return entityCreated;
+            return entity;
         }
 
         public virtual T Update(T entity, int id)
@@ -33,7 +31,7 @@ namespace RentACarWebAPI.Repositories
 
             UpdateEntity(existingEntity, entity);
 
-            _dbContext.SaveChanges();
+            DbContext.SaveChanges();
 
             return existingEntity;
         }
@@ -42,20 +40,26 @@ namespace RentACarWebAPI.Repositories
 
         public virtual T Get(int id)
         {
-            var entity = _dbContext.Set<T>().Find(id);
+            var entity = DbContext.Set<T>().Find(id);
             return entity;
         }
 
         public virtual void Delete(int id)
         {
-            _dbContext.Set<T>().Remove(Get(id));
-            _dbContext.SaveChanges();
+            DbContext.Set<T>().Remove(Get(id));
+            DbContext.SaveChanges();
         }
 
         public virtual List<T> GetAll()
         {
-            var entityList = _dbContext.Set<T>().ToList();
+            var entityList = DbContext.Set<T>().ToList();
             return entityList;
+        }
+
+        public virtual bool EntityExist(T entity)
+        {
+            var entityExists = DbContext.Set<T>().Any(e => e.Id == entity.Id);
+            return entityExists;
         }
     }
 }
