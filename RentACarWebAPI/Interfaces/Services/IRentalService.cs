@@ -1,9 +1,8 @@
-﻿using RentACarWebAPI.Interfaces.Repositories;
-using RentACarWebAPI.Models;
+﻿using RentACarWebAPI.Models;
 
 namespace RentACarWebAPI.Interfaces.Services
 {
-    public interface IRentalService : IBaseRepository<Rental>
+    public interface IRentalService : IBaseService<Rental>
     {
     }
 }
