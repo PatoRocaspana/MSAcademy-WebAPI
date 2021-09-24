@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using RentACarWebAPI.DTOs;
 using RentACarWebAPI.Interfaces.Services;
 using System.Collections.Generic;
@@ -21,57 +22,84 @@ namespace RentACarWebAPI.Controllers
 
         // GET: api/<RentalController>
         [HttpGet]
-        public IEnumerable<RentalDto> Get()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RentalDto>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Get()
         {
             var rentalEntityList = _rentalService.GetAll();
 
+            if (rentalEntityList is null)
+                return NotFound();
+
             var rentalDtoList = rentalEntityList.Select(rentalEntity => new RentalDto(rentalEntity)).ToList();
 
-            return rentalDtoList;
+            return Ok(rentalDtoList);
         }
 
         // GET api/<RentalController>/5
         [HttpGet("{id}")]
-        public RentalDto Get(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RentalDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Get(int id)
         {
             var rentalEntity = _rentalService.Get(id);
 
+            if (rentalEntity is null)
+                return NotFound();
+
             var rentalDto = new RentalDto(rentalEntity);
 
-            return rentalDto;
+            return Ok(rentalDto);
         }
 
         // POST api/<RentalController>
         [HttpPost]
-        public RentalDto Post([FromBody] RentalDto rentalDto)
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RentalDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Post([FromBody] RentalDto rentalDto)
         {
             var rentalEntity = rentalDto.ToRentalEntity(rentalDto);
 
             var rentalCreated = _rentalService.Create(rentalEntity);
 
+            if (rentalCreated is null)
+                return NotFound();
+
             var rentalResponse = new RentalDto(rentalCreated);
 
-            return rentalResponse;
+            return Ok(rentalResponse);
         }
 
         // PUT api/<RentalController>/5
         [HttpPut("{id}")]
-        public RentalDto Put([FromBody] RentalDto rentalDto, int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RentalDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Put([FromBody] RentalDto rentalDto, int id)
         {
             var rentalEntity = rentalDto.ToRentalEntity(rentalDto);
 
             var rentalUpdated = _rentalService.Update(rentalEntity, id);
 
+            if (rentalUpdated is null)
+                return NotFound();
+
             var rentalResponse = new RentalDto(rentalUpdated);
 
-            return rentalResponse;
+            return Ok(rentalResponse);
         }
 
         // DELETE api/<RentalController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Delete(int id)
         {
+            var rentalExist = _rentalService.EntityExist(id);
+            if (!rentalExist)
+                return NotFound();
+
             _rentalService.Delete(id);
+            return NoContent();
         }
     }
 }
