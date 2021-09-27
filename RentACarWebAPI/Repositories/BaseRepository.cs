@@ -56,9 +56,9 @@ namespace RentACarWebAPI.Repositories
             return entityList;
         }
 
-        public virtual bool EntityExist(T entity)
+        public virtual bool EntityExist(int id)
         {
-            var entityExists = DbContext.Set<T>().Any(e => e.Id == entity.Id);
+            var entityExists = DbContext.Set<T>().Any(e => e.Id == id);
             return entityExists;
         }
     }

@@ -10,6 +10,6 @@ namespace RentACarWebAPI.Interfaces.Repositories
         T Update(T obj, int id);
         void Delete(int id);
         List<T> GetAll();
-        bool EntityExist(T obj);
+        bool EntityExist(int id);
     }
 }
