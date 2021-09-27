@@ -43,7 +43,7 @@ namespace RentACarWebAPI.Services
             return updatedEntity;
         }
 
-        public bool EntityExist(int id)
+        public bool EntityExists(int id)
         {
             var entityExist = _entityRepository.EntityExist(id);
             return entityExist;

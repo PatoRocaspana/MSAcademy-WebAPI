@@ -21,12 +21,12 @@ namespace RentACarWebAPI.Repositories
 
         public override List<Client> GetAll()
         {
-            var orderClientList = DbContext.Clients.OrderBy(e => e.Dni).ToList();
+            var orderClientList = DbContext.Clients.OrderBy(e => e.Id).ToList();
 
             return orderClientList;
         }
 
-        public bool DniExist(Client client)
+        public bool DniExists(Client client)
         {
             var exists = DbContext.Clients.Any(o => o.Dni == client.Dni);
             return exists;

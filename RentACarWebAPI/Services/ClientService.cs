@@ -15,7 +15,7 @@ namespace RentACarWebAPI.Services
 
         public override Client Create(Client newClient)
         {
-            var clientExists = _clientRepository.DniExist(newClient);
+            var clientExists = _clientRepository.DniExists(newClient);
             if (clientExists) return null;
 
             var clientCreated = base.Create(newClient);
@@ -32,8 +32,8 @@ namespace RentACarWebAPI.Services
 
             if (existingClient.Dni != newClient.Dni)
             {
-                var DniExist = _clientRepository.DniExist(newClient);
-                if (DniExist)
+                var dniExists = _clientRepository.DniExists(newClient);
+                if (dniExists)
                     return null;
             }
 

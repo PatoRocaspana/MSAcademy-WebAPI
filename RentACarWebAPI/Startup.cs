@@ -25,8 +25,8 @@ namespace RentACarWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<RentACarDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("Database")
-            ));
+                options.UseSqlServer(Configuration.GetConnectionString("Database"))
+                );
 
             services.AddControllers();
 

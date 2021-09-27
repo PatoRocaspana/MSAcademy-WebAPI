@@ -94,7 +94,7 @@ namespace RentACarWebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var carExist = _carService.EntityExist(id);
+            var carExist = _carService.EntityExists(id);
 
             if (!carExist)
                 return NotFound();

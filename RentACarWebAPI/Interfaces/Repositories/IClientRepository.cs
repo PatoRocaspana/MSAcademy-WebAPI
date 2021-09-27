@@ -4,6 +4,6 @@ namespace RentACarWebAPI.Interfaces.Repositories
 {
     public interface IClientRepository : IBaseRepository<Client>
     {
-        bool DniExist(Client client);
+        bool DniExists(Client client);
     }
 }

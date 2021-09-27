@@ -94,7 +94,7 @@ namespace RentACarWebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
-            var clientExist = _clientService.EntityExist(id);
+            var clientExist = _clientService.EntityExists(id);
             if (!clientExist)
                 return NotFound();
 
