@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using RentACarWebAPI.DTOs;
 using RentACarWebAPI.Interfaces.Services;
 using System.Collections.Generic;
@@ -21,57 +22,84 @@ namespace RentACarWebAPI.Controllers
 
         // GET: api/<ClientController>
         [HttpGet]
-        public IEnumerable<ClientDto> Get()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ClientDto>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Get()
         {
             var clientEntityList = _clientService.GetAll();
 
-            var clientDtoList = clientEntityList.Select(clientEntity => new ClientDto(clientEntity)).ToList();
+            if (clientEntityList is null)
+                return NotFound();
 
-            return clientDtoList;
+            var clientDtoList = clientEntityList.Select(clientEntity => new ClientDto(clientEntity));
+
+            return Ok(clientDtoList);
         }
 
         // GET api/<ClientController>/5
         [HttpGet("{id}")]
-        public ClientDto Get(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ClientDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Get(int id)
         {
             var clientEntity = _clientService.Get(id);
 
+            if (clientEntity is null)
+                return NotFound();
+
             var clientDto = new ClientDto(clientEntity);
 
-            return clientDto;
+            return Ok(clientDto);
         }
 
         // POST api/<ClientController>
         [HttpPost]
-        public ClientDto Post([FromBody] ClientDto clientDto)
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ClientDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Post([FromBody] ClientDto clientDto)
         {
             var clientEntity = clientDto.ToClientEntity(clientDto);
 
             var clientCreated = _clientService.Create(clientEntity);
 
+            if (clientCreated is null)
+                return NotFound();
+
             var carResponse = new ClientDto(clientCreated);
 
-            return carResponse;
+            return Ok(carResponse);
         }
 
         // PUT api/<ClientController>/5
         [HttpPut("{id}")]
-        public ClientDto Put([FromBody] ClientDto clientDto, int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ClientDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Put([FromBody] ClientDto clientDto, int id)
         {
             var clientEntity = clientDto.ToClientEntity(clientDto);
 
-            var clientCreated = _clientService.Update(clientEntity, id);
+            var clientUpdated = _clientService.Update(clientEntity, id);
 
-            var clientResponse = new ClientDto(clientCreated);
+            if (clientUpdated is null)
+                return NotFound();
 
-            return clientResponse;
+            var clientResponse = new ClientDto(clientUpdated);
+
+            return Ok(clientResponse);
         }
 
         // DELETE api/<ClientController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult Delete(int id)
         {
+            var clientExist = _clientService.EntityExists(id);
+            if (!clientExist)
+                return NotFound();
+
             _clientService.Delete(id);
+            return NoContent();
         }
     }
 }

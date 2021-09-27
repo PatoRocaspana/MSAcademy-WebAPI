@@ -1,7 +1,6 @@
 ﻿using RentACarWebAPI.Interfaces.Repositories;
 using RentACarWebAPI.Interfaces.Services;
 using RentACarWebAPI.Models;
-using System.Linq;
 
 namespace RentACarWebAPI.Services
 {
@@ -16,10 +15,8 @@ namespace RentACarWebAPI.Services
 
         public override Client Create(Client newClient)
         {
-            var clientList = _clientRepository.GetAll();
-
-            if (clientList.Any(e => e.Dni == newClient.Dni))
-                return null;
+            var clientExists = _clientRepository.DniExists(newClient);
+            if (clientExists) return null;
 
             var clientCreated = base.Create(newClient);
 
@@ -33,11 +30,10 @@ namespace RentACarWebAPI.Services
             if (existingClient is null)
                 return null;
 
-            var clientList = _clientRepository.GetAll();
-
             if (existingClient.Dni != newClient.Dni)
             {
-                if (clientList.Any(e => e.Dni == newClient.Dni))
+                var dniExists = _clientRepository.DniExists(newClient);
+                if (dniExists)
                     return null;
             }
 

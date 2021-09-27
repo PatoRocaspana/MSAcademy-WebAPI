@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using RentACarWebAPI.Helpers;
 using RentACarWebAPI.Interfaces.Repositories;
 using RentACarWebAPI.Interfaces.Services;
-using RentACarWebAPI.Models;
-using RentACarWebAPI.Options;
 using RentACarWebAPI.Repositories;
 using RentACarWebAPI.Services;
 
@@ -26,6 +24,10 @@ namespace RentACarWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<RentACarDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("Database"))
+                );
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -33,16 +35,9 @@ namespace RentACarWebAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RentACarWebAPI", Version = "v1" });
             });
 
-            services.Configure<StorageOptions>(Configuration
-                .GetSection(nameof(StorageOptions)));
-
             services.AddTransient<ICarRepository, CarRepository>();
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IRentalRepository, RentalRepository>();
-
-            services.AddTransient<IRepositoryHelper<Car>, RepositoryHelper<Car>>();
-            services.AddTransient<IRepositoryHelper<Client>, RepositoryHelper<Client>>();
-            services.AddTransient<IRepositoryHelper<Rental>, RepositoryHelper<Rental>>();
 
             services.AddTransient<ICarService, CarService>();
             services.AddTransient<IClientService, ClientService>();

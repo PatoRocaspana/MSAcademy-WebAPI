@@ -6,8 +6,6 @@ namespace RentACarWebAPI.Services
 {
     public class RentalService : BaseService<Rental>, IRentalService
     {
-        public RentalService(IRentalRepository rentalRepository) : base(rentalRepository)
-        {
-        }
+        public RentalService(IRentalRepository rentalRepository) : base(rentalRepository) { }
     }
 }

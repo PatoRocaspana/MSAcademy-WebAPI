@@ -7,24 +7,17 @@ namespace RentACarWebAPI.Repositories
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
     {
-        protected readonly IRepositoryHelper<T> RepositoryHelper;
-        protected List<T> EntityList { get; private set; }
+        protected readonly RentACarDbContext DbContext;
 
-        protected readonly string _jsonFile;
-
-        public BaseRepository(string storagePath, IRepositoryHelper<T> repositoryHelper)
+        public BaseRepository(RentACarDbContext dbContext)
         {
-            _jsonFile = storagePath;
-            RepositoryHelper = repositoryHelper;
-            EntityList = RepositoryHelper.CheckFileAndGetList(_jsonFile);
+            DbContext = dbContext;
         }
 
         public virtual T Create(T entity)
         {
-            entity.Id = RepositoryHelper.GetNewId(EntityList);
-            EntityList.Add(entity);
-
-            RepositoryHelper.SaveListToFile(EntityList, _jsonFile);
+            DbContext.Set<T>().Add(entity);
+            DbContext.SaveChanges();
 
             return entity;
         }
@@ -38,7 +31,7 @@ namespace RentACarWebAPI.Repositories
 
             UpdateEntity(existingEntity, entity);
 
-            RepositoryHelper.SaveListToFile(EntityList, _jsonFile);
+            DbContext.SaveChanges();
 
             return existingEntity;
         }
@@ -47,19 +40,26 @@ namespace RentACarWebAPI.Repositories
 
         public virtual T Get(int id)
         {
-            var entity = EntityList.FirstOrDefault(e => e.Id == id);
+            var entity = DbContext.Set<T>().Find(id);
             return entity;
         }
 
         public virtual void Delete(int id)
         {
-            EntityList.Remove(EntityList.FirstOrDefault(obj => obj.Id == id));
-            RepositoryHelper.SaveListToFile(EntityList, _jsonFile);
+            DbContext.Set<T>().Remove(Get(id));
+            DbContext.SaveChanges();
         }
 
         public virtual List<T> GetAll()
         {
-            return EntityList;
+            var entityList = DbContext.Set<T>().ToList();
+            return entityList;
+        }
+
+        public virtual bool EntityExist(int id)
+        {
+            var entityExists = DbContext.Set<T>().Any(e => e.Id == id);
+            return entityExists;
         }
     }
 }
