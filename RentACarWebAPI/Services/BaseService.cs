@@ -2,6 +2,7 @@
 using RentACarWebAPI.Interfaces.Services;
 using RentACarWebAPI.Models.Base;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RentACarWebAPI.Services
 {
@@ -14,38 +15,38 @@ namespace RentACarWebAPI.Services
             _entityRepository = entityRepository;
         }
 
-        public virtual T Create(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
-            var entityCreated = _entityRepository.Create(entity);
+            var entityCreated = await _entityRepository.CreateAsync(entity);
             return entityCreated;
         }
 
-        public virtual void Delete(int id)
+        public virtual async Task DeleteAsync(int id)
         {
-            _entityRepository.Delete(id);
+            await _entityRepository.DeleteAsync(id);
         }
 
-        public virtual T Get(int id)
+        public virtual async Task<T> GetAsync(int id)
         {
-            var entity = _entityRepository.Get(id);
+            var entity = await _entityRepository.GetAsync(id);
             return entity;
         }
 
-        public virtual List<T> GetAll()
+        public virtual async Task<List<T>> GetAllAsync()
         {
-            var entityList = _entityRepository.GetAll();
+            var entityList = await _entityRepository.GetAllAsync();
             return entityList;
         }
 
-        public virtual T Update(T entity, int id)
+        public virtual async Task<T> UpdateAsync(T entity, int id)
         {
-            var updatedEntity = _entityRepository.Update(entity, id);
+            var updatedEntity = await _entityRepository.UpdateAsync(entity, id);
             return updatedEntity;
         }
 
-        public bool EntityExists(int id)
+        public async Task<bool> EntityExistsAsync(int id)
         {
-            var entityExist = _entityRepository.EntityExist(id);
+            var entityExist = await _entityRepository.EntityExistAsync(id);
             return entityExist;
         }
     }

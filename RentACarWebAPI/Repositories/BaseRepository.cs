@@ -1,7 +1,9 @@
-﻿using RentACarWebAPI.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using RentACarWebAPI.Interfaces.Repositories;
 using RentACarWebAPI.Models.Base;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace RentACarWebAPI.Repositories
 {
@@ -14,51 +16,52 @@ namespace RentACarWebAPI.Repositories
             DbContext = dbContext;
         }
 
-        public virtual T Create(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
-            DbContext.Set<T>().Add(entity);
-            DbContext.SaveChanges();
+            await DbContext.Set<T>().AddAsync(entity);
+            await DbContext.SaveChangesAsync();
 
             return entity;
         }
 
-        public virtual T Update(T entity, int id)
+        public virtual async Task<T> UpdateAsync(T entity, int id)
         {
-            var existingEntity = Get(id);
+            var existingEntity = await GetAsync(id);
 
             if (existingEntity is null)
                 return null;
 
             UpdateEntity(existingEntity, entity);
 
-            DbContext.SaveChanges();
+            await DbContext.SaveChangesAsync();
 
             return existingEntity;
         }
 
         protected abstract void UpdateEntity(T existingEntity, T newEntity);
 
-        public virtual T Get(int id)
+        public virtual async Task<T> GetAsync(int id)
         {
-            var entity = DbContext.Set<T>().Find(id);
+            var entity = await DbContext.Set<T>().FindAsync(id);
             return entity;
         }
 
-        public virtual void Delete(int id)
+        public virtual async Task DeleteAsync(int id)
         {
-            DbContext.Set<T>().Remove(Get(id));
-            DbContext.SaveChanges();
+            var entityToDelete = await GetAsync(id);
+            DbContext.Set<T>().Remove(entityToDelete);
+            await DbContext.SaveChangesAsync();
         }
 
-        public virtual List<T> GetAll()
+        public virtual async Task<List<T>> GetAllAsync()
         {
-            var entityList = DbContext.Set<T>().ToList();
+            var entityList = await DbContext.Set<T>().ToListAsync();
             return entityList;
         }
 
-        public virtual bool EntityExist(int id)
+        public virtual async Task<bool> EntityExistAsync(int id)
         {
-            var entityExists = DbContext.Set<T>().Any(e => e.Id == id);
+            var entityExists = await DbContext.Set<T>().AnyAsync(e => e.Id == id);
             return entityExists;
         }
     }

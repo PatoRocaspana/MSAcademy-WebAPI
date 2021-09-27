@@ -1,8 +1,10 @@
-﻿using RentACarWebAPI.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using RentACarWebAPI.Interfaces.Repositories;
 using RentACarWebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace RentACarWebAPI.Repositories
 {
@@ -10,25 +12,25 @@ namespace RentACarWebAPI.Repositories
     {
         public ClientRepository(RentACarDbContext dbContext) : base(dbContext) { }
 
-        public override Client Create(Client newEntity)
+        public override async Task<Client> CreateAsync(Client newEntity)
         {
             newEntity.LastUpdate = DateTime.UtcNow;
 
-            var clientCreated = base.Create(newEntity);
+            var clientCreated = await base.CreateAsync(newEntity);
 
             return clientCreated;
         }
 
-        public override List<Client> GetAll()
+        public override async Task<List<Client>> GetAllAsync()
         {
-            var orderClientList = DbContext.Clients.OrderBy(e => e.Id).ToList();
+            var orderClientList = await DbContext.Clients.OrderBy(e => e.Id).ToListAsync();
 
             return orderClientList;
         }
 
-        public bool DniExists(Client client)
+        public async Task<bool> DniExistsAsync(Client client)
         {
-            var exists = DbContext.Clients.Any(o => o.Dni == client.Dni);
+            var exists = await DbContext.Clients.AnyAsync(o => o.Dni == client.Dni);
             return exists;
         }
 

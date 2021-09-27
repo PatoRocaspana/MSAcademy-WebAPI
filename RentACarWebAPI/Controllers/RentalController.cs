@@ -4,6 +4,7 @@ using RentACarWebAPI.DTOs;
 using RentACarWebAPI.Interfaces.Services;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,9 +25,9 @@ namespace RentACarWebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<RentalDto>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAsync()
         {
-            var rentalEntityList = _rentalService.GetAll();
+            var rentalEntityList = await _rentalService.GetAllAsync();
 
             if (rentalEntityList is null)
                 return NotFound();
@@ -40,9 +41,9 @@ namespace RentACarWebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RentalDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            var rentalEntity = _rentalService.Get(id);
+            var rentalEntity = await _rentalService.GetAsync(id);
 
             if (rentalEntity is null)
                 return NotFound();
@@ -56,11 +57,11 @@ namespace RentACarWebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RentalDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Post([FromBody] RentalDto rentalDto)
+        public async Task<IActionResult> PostAsync([FromBody] RentalDto rentalDto)
         {
             var rentalEntity = rentalDto.ToRentalEntity(rentalDto);
 
-            var rentalCreated = _rentalService.Create(rentalEntity);
+            var rentalCreated = await _rentalService.CreateAsync(rentalEntity);
 
             if (rentalCreated is null)
                 return NotFound();
@@ -74,11 +75,11 @@ namespace RentACarWebAPI.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RentalDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Put([FromBody] RentalDto rentalDto, int id)
+        public async Task<IActionResult> PutAsync([FromBody] RentalDto rentalDto, int id)
         {
             var rentalEntity = rentalDto.ToRentalEntity(rentalDto);
 
-            var rentalUpdated = _rentalService.Update(rentalEntity, id);
+            var rentalUpdated = await _rentalService.UpdateAsync(rentalEntity, id);
 
             if (rentalUpdated is null)
                 return NotFound();
@@ -92,13 +93,13 @@ namespace RentACarWebAPI.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            var rentalExist = _rentalService.EntityExists(id);
+            var rentalExist = await _rentalService.EntityExistsAsync(id);
             if (!rentalExist)
                 return NotFound();
 
-            _rentalService.Delete(id);
+            await _rentalService.DeleteAsync(id);
             return NoContent();
         }
     }

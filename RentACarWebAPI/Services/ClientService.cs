@@ -1,6 +1,7 @@
 ﻿using RentACarWebAPI.Interfaces.Repositories;
 using RentACarWebAPI.Interfaces.Services;
 using RentACarWebAPI.Models;
+using System.Threading.Tasks;
 
 namespace RentACarWebAPI.Services
 {
@@ -13,31 +14,31 @@ namespace RentACarWebAPI.Services
             _clientRepository = clientRepository;
         }
 
-        public override Client Create(Client newClient)
+        public override async Task<Client> CreateAsync(Client newClient)
         {
-            var clientExists = _clientRepository.DniExists(newClient);
+            var clientExists = await _clientRepository.DniExistsAsync(newClient);
             if (clientExists) return null;
 
-            var clientCreated = base.Create(newClient);
+            var clientCreated = await base.CreateAsync(newClient);
 
             return clientCreated;
         }
 
-        public override Client Update(Client newClient, int id)
+        public override async Task<Client> UpdateAsync(Client newClient, int id)
         {
-            var existingClient = _clientRepository.Get(id);
+            var existingClient = await _clientRepository.GetAsync(id);
 
             if (existingClient is null)
                 return null;
 
             if (existingClient.Dni != newClient.Dni)
             {
-                var dniExists = _clientRepository.DniExists(newClient);
+                var dniExists = await _clientRepository.DniExistsAsync(newClient);
                 if (dniExists)
                     return null;
             }
 
-            var clientUpdated = base.Update(newClient, id);
+            var clientUpdated = await base.UpdateAsync(newClient, id);
 
             return clientUpdated;
         }
