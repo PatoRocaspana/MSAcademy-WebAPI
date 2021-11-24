@@ -1,9 +1,10 @@
 ﻿using RentACarWebAPI.Models;
+using System.Threading.Tasks;
 
 namespace RentACarWebAPI.Interfaces.Repositories
 {
     public interface IClientRepository : IBaseRepository<Client>
     {
-        bool DniExists(Client client);
+        Task<bool> DniExistsAsync(Client client);
     }
 }

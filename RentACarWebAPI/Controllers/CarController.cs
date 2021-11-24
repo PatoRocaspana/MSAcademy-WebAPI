@@ -4,6 +4,7 @@ using RentACarWebAPI.DTOs;
 using RentACarWebAPI.Interfaces.Services;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,9 +25,9 @@ namespace RentACarWebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CarDto>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAsync()
         {
-            var carEntityList = _carService.GetAll();
+            var carEntityList = await _carService.GetAllAsync();
 
             if (carEntityList is null)
                 return NotFound();
@@ -40,9 +41,9 @@ namespace RentACarWebAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            var carEntity = _carService.Get(id);
+            var carEntity = await _carService.GetAsync(id);
 
             if (carEntity is null)
                 return NotFound();
@@ -56,11 +57,11 @@ namespace RentACarWebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CarDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Post([FromBody] CarDto carDto)
+        public async Task<IActionResult> PostAsync([FromBody] CarDto carDto)
         {
             var carEntity = carDto.ToCarEntity(carDto);
 
-            var carCreated = _carService.Create(carEntity);
+            var carCreated = await _carService.CreateAsync(carEntity);
 
             if (carCreated is null)
                 return NotFound();
@@ -74,11 +75,11 @@ namespace RentACarWebAPI.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Put([FromBody] CarDto carDto, int id)
+        public async Task<IActionResult> PutAsync([FromBody] CarDto carDto, int id)
         {
             var carEntity = carDto.ToCarEntity(carDto);
 
-            var carUpdated = _carService.Update(carEntity, id);
+            var carUpdated = await _carService.UpdateAsync(carEntity, id);
 
             if (carUpdated is null)
                 return NotFound();
@@ -92,14 +93,14 @@ namespace RentACarWebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            var carExist = _carService.EntityExists(id);
+            var carExist = await _carService.EntityExistsAsync(id);
 
             if (!carExist)
                 return NotFound();
 
-            _carService.Delete(id);
+            await _carService.DeleteAsync(id);
             return NoContent();
         }
     }
