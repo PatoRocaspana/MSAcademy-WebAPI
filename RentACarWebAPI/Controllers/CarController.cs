@@ -23,7 +23,7 @@ namespace RentACarWebAPI.Controllers
 
         // GET: api/<CarController>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CarDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<CarDto>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAsync()
         {
@@ -32,7 +32,9 @@ namespace RentACarWebAPI.Controllers
             if (carEntityList is null)
                 return NotFound();
 
-            var carDtoList = carEntityList.Select(carEntity => new CarDto(carEntity));
+            var carDtoList = carEntityList
+                    .Select(carEntity => new CarDto(carEntity))
+                    .ToList();
 
             return Ok(carDtoList);
         }
