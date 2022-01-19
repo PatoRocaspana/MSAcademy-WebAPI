@@ -59,7 +59,7 @@ namespace RentACarTests.ControllersTests
             //act
             var resultQuery = await clientController.GetAsync();
 
-            //result
+            //assert
             var objectResult = Assert.IsType<OkObjectResult>(resultQuery);
             var listResult = Assert.IsType<List<ClientDto>>(objectResult.Value);
             Assert.Empty(listResult);
@@ -87,7 +87,7 @@ namespace RentACarTests.ControllersTests
         [Fact]
         public async Task GetAsync_ReturnsClientDto()
         {
-            //assert
+            //arrange
             var clientId = 10;
             var client = new Client() { Id = clientId, Name = "Amber", Dni = "99888777" };
 
@@ -99,7 +99,7 @@ namespace RentACarTests.ControllersTests
             //act
             var resultQuery = await clientController.GetAsync(clientId);
 
-            //result
+            //assert
             var objectResult = Assert.IsType<OkObjectResult>(resultQuery);
             var clientResult = Assert.IsType<ClientDto>(objectResult.Value);
             Assert.Equal(client.Id, clientResult.Id);
@@ -110,7 +110,7 @@ namespace RentACarTests.ControllersTests
         [Fact]
         public async Task GetAsync_WhenClientNotExists_ReturnsNotFound()
         {
-            //assert
+            //arrange
             var clientId = 2;
 
             var mockClientService = new Mock<IClientService>();
@@ -130,7 +130,7 @@ namespace RentACarTests.ControllersTests
         [Fact]
         public async Task PostAsync_ReturnsClientDto()
         {
-            //assert
+            //arrange
             var clientDto = new ClientDto() { Id = 999, Name = "Indian", Dni = "11333555", LastUpdate = System.DateTime.Now };
             var client = new Client() { Id = 999, Name = "Indian", Dni = "11333555", LastUpdate = System.DateTime.Now };
 
@@ -142,7 +142,7 @@ namespace RentACarTests.ControllersTests
             //act
             var resultQuery = await clientController.PostAsync(clientDto);
 
-            //result
+            //assert
             var objectResult = Assert.IsType<OkObjectResult>(resultQuery);
             var clientDtoCreated = Assert.IsType<ClientDto>(objectResult.Value);
             Assert.Equal(clientDto.Id, clientDtoCreated.Id);
@@ -151,7 +151,7 @@ namespace RentACarTests.ControllersTests
         [Fact]
         public async Task PostAsync_WhenError_ReturnsBadRequest()
         {
-            //assert
+            //arrange
             var clientDto = new ClientDto();
 
             var mockClientService = new Mock<IClientService>();
@@ -162,7 +162,7 @@ namespace RentACarTests.ControllersTests
             //act
             var resultQuery = await clientController.PostAsync(clientDto);
 
-            //result
+            //assert
             var objectResult = Assert.IsType<BadRequestResult>(resultQuery);
         }
         #endregion
@@ -171,7 +171,7 @@ namespace RentACarTests.ControllersTests
         [Fact]
         public async Task PutAsync_ReturnsUpdatedClientDto()
         {
-            //assert
+            //arrange
             var oldCity = "Firmat";
             var newCity = "Rosario";
 
@@ -186,7 +186,7 @@ namespace RentACarTests.ControllersTests
             //act
             var resultQuery = await clientController.PutAsync(clientDto, clientDto.Id);
 
-            //result
+            //assert
             var objectResult = Assert.IsType<OkObjectResult>(resultQuery);
             var clientDtoUpdated = Assert.IsType<ClientDto>(objectResult.Value);
             Assert.Equal(clientDto.Id, clientDtoUpdated.Id);
@@ -197,7 +197,7 @@ namespace RentACarTests.ControllersTests
         [Fact]
         public async Task PutAsync_WhenNoExists_ReturnsNotFound()
         {
-            //assert
+            //arrange
             var clientDto = new ClientDto() { Id = 999, Name = "Indian", Dni = "11333555", City = "Rosario"};
 
             var mockClientService = new Mock<IClientService>();
@@ -208,7 +208,7 @@ namespace RentACarTests.ControllersTests
             //act
             var resultQuery = await clientController.PutAsync(clientDto, clientDto.Id);
 
-            //result
+            //assert
             var objectResult = Assert.IsType<NotFoundResult>(resultQuery);
         }
         #endregion
@@ -217,7 +217,7 @@ namespace RentACarTests.ControllersTests
         [Fact]
         public async Task DeleteAsync_ReturnsNoContent()
         {
-            //assert
+            //arrange
             var clientId = 7;
             var mockClientService = new Mock<IClientService>();
             mockClientService.Setup(serv => serv.EntityExistsAsync(clientId)).ReturnsAsync(true);
@@ -227,7 +227,7 @@ namespace RentACarTests.ControllersTests
             //act
             var resultQuery = await clientController.DeleteAsync(clientId);
 
-            //result
+            //assert
             var objectResult = Assert.IsType<NoContentResult>(resultQuery);
             mockClientService.Verify(serv => serv.DeleteAsync(clientId), Times.Once);
         }
@@ -235,7 +235,7 @@ namespace RentACarTests.ControllersTests
         [Fact]
         public async Task DeleteAsync_WhenNoExists_ReturnsNotFound()
         {
-            //assert
+            //arrange
             var clientId = 7;
             var mockClientService = new Mock<IClientService>();
             mockClientService.Setup(serv => serv.EntityExistsAsync(clientId)).ReturnsAsync(false);
@@ -245,7 +245,7 @@ namespace RentACarTests.ControllersTests
             //act
             var resultQuery = await clientController.DeleteAsync(clientId);
 
-            //result
+            //assert
             var objectResult = Assert.IsType<NotFoundResult>(resultQuery);
             mockClientService.Verify(serv => serv.DeleteAsync(clientId), Times.Never);
         }
