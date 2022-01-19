@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RentACarWebAPI.DTOs;
 using RentACarWebAPI.Interfaces.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,7 +59,7 @@ namespace RentACarWebAPI.Controllers
         // POST api/<ClientController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ClientDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PostAsync([FromBody] ClientDto clientDto)
         {
             var clientEntity = clientDto.ToClientEntity(clientDto);
@@ -66,11 +67,11 @@ namespace RentACarWebAPI.Controllers
             var clientCreated = await _clientService.CreateAsync(clientEntity);
 
             if (clientCreated is null)
-                return NotFound();
+                return BadRequest();
 
-            var carResponse = new ClientDto(clientCreated);
-
-            return Ok(carResponse);
+            var clientResponse = new ClientDto(clientCreated);
+            
+            return Ok(clientResponse);
         }
 
         // PUT api/<ClientController>/5

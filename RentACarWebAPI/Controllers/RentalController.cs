@@ -58,7 +58,7 @@ namespace RentACarWebAPI.Controllers
         // POST api/<RentalController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RentalDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PostAsync([FromBody] RentalDto rentalDto)
         {
             var rentalEntity = rentalDto.ToRentalEntity(rentalDto);
@@ -66,7 +66,7 @@ namespace RentACarWebAPI.Controllers
             var rentalCreated = await _rentalService.CreateAsync(rentalEntity);
 
             if (rentalCreated is null)
-                return NotFound();
+                return BadRequest();
 
             var rentalResponse = new RentalDto(rentalCreated);
 
