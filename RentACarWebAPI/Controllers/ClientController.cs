@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RentACarWebAPI.DTOs;
 using RentACarWebAPI.Interfaces.Services;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -70,7 +69,7 @@ namespace RentACarWebAPI.Controllers
                 return BadRequest();
 
             var clientResponse = new ClientDto(clientCreated);
-            
+
             return Ok(clientResponse);
         }
 
