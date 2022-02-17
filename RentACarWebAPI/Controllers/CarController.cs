@@ -58,7 +58,7 @@ namespace RentACarWebAPI.Controllers
         // POST api/<CarController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CarDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PostAsync([FromBody] CarDto carDto)
         {
             var carEntity = carDto.ToCarEntity(carDto);
@@ -66,7 +66,7 @@ namespace RentACarWebAPI.Controllers
             var carCreated = await _carService.CreateAsync(carEntity);
 
             if (carCreated is null)
-                return NotFound();
+                return BadRequest();
 
             var carResponse = new CarDto(carCreated);
 

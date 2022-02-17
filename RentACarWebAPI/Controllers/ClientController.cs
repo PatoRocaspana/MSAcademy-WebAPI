@@ -58,7 +58,7 @@ namespace RentACarWebAPI.Controllers
         // POST api/<ClientController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ClientDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PostAsync([FromBody] ClientDto clientDto)
         {
             var clientEntity = clientDto.ToClientEntity(clientDto);
@@ -66,11 +66,11 @@ namespace RentACarWebAPI.Controllers
             var clientCreated = await _clientService.CreateAsync(clientEntity);
 
             if (clientCreated is null)
-                return NotFound();
+                return BadRequest();
 
-            var carResponse = new ClientDto(clientCreated);
+            var clientResponse = new ClientDto(clientCreated);
 
-            return Ok(carResponse);
+            return Ok(clientResponse);
         }
 
         // PUT api/<ClientController>/5
